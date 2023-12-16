@@ -1,4 +1,11 @@
+using FaceRetouching.Server.Entities;
 using FaceRetouching.Server.Services;
+using Microsoft.EntityFrameworkCore;
+
+using (var db = new Context())
+{
+	db.Database.Migrate();
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
