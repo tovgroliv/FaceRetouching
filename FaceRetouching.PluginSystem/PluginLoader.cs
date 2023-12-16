@@ -4,7 +4,7 @@ namespace FaceRetouching.PluginSystem;
 
 public class PluginLoader
 {
-	public static List<IPlugin> Plugins { get; private set; } = new();
+	public List<IPlugin> Plugins { get; private set; } = new();
 
 	public void LoadPlugins()
 	{
@@ -12,17 +12,32 @@ public class PluginLoader
 
 		if (Directory.Exists(Constants.FolderName))
 		{
-			var files = Directory.GetFiles(Constants.FolderName).ToList();
-
-			files
+			Directory
+				.GetFiles(Constants.FolderName)
+				.ToList()
 				.Where(file => file.EndsWith(".dll"))
 				.ToList()
-				.ForEach(file => Assembly.LoadFile(Path.GetFullPath(file)));
+				.ForEach(file =>
+				{
+					var dll = File.ReadAllBytes(file);
+					var pdbPath = file.Replace(".dll", ".pdb");
+
+					if (File.Exists(pdbPath))
+					{
+						var pdb = File.ReadAllBytes(pdbPath);
+						Assembly.Load(dll, pdb);
+					}
+					else
+					{
+						Assembly.Load(dll);
+					}
+				});
 		}
 
-		Type interfaceType = typeof(IPlugin);
+		var interfaceType = typeof(IPlugin);
 
-		AppDomain.CurrentDomain.GetAssemblies()
+		AppDomain.CurrentDomain
+			.GetAssemblies()
 			.SelectMany(a => a.GetTypes())
 			.Where(p => interfaceType.IsAssignableFrom(p) && p.IsClass)
 			.ToList()
