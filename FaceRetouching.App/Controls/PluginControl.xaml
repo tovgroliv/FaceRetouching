@@ -14,7 +14,7 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition />
@@ -23,10 +23,10 @@
 			</Grid.RowDefinitions>
 
 			<CheckBox x:Name="select" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="5" />
-			<Label Grid.Column="1" Grid.Row="0" Content="Имя плагина" />
-			<Label Grid.Column="2" Grid.Row="0" Content="{Binding ElementName=base, Path=PluginName}" />
-			<Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Content="Описание плагина" />
-			<Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Content="{Binding ElementName=base, Path=PluginDescription}" />
+			<TextBlock Grid.Column="1" Grid.Row="0" FontWeight="Bold" Text="Имя плагина:" />
+			<TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Right" TextWrapping="Wrap" Text="{Binding ElementName=base, Path=PluginName}" />
+			<TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" FontWeight="Bold" Text="Описание плагина:" />
+			<TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" TextWrapping="Wrap" Text="{Binding ElementName=base, Path=PluginDescription}" />
 		</Grid>
 	</Border>
 </UserControl>

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option csharp_namespace = "FaceRetouching.Server";
+
+package main;
+
+service Plugins {
+	rpc Upload (UploadRequest) returns (UploadReply);
+	rpc List (ListRequest) returns (ListReply);
+	rpc Load (LoadRequest) returns (LoadReply);
+}
+
+message UploadRequest {
+	string name = 1;
+	string description = 2;
+	repeated string paths = 3;
+	repeated bytes libs = 4;
+}
+message UploadReply {
+	bool success = 1;
+}
+
+message ListRequest {
+
+}
+message ListReply {
+	repeated PluginInfo plugins = 1;
+}
+message PluginInfo {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message LoadRequest {
+    uint32 id = 1;
+}
+message LoadReply {
+	PluginDll dll = 1;
+}
+message PluginDll {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+	repeated string paths = 4;
+	repeated bytes libs = 5;
+}
