@@ -59,5 +59,13 @@
 				</StackPanel>
 			</TabItem>
 		</TabControl>
+
+		<Border x:Name="LoadingPanel" Visibility="Collapsed" Background="#ddffffff" Grid.ColumnSpan="3">
+			<StackPanel MinWidth="300" VerticalAlignment="Center" HorizontalAlignment="Center">
+				<Label HorizontalAlignment="Center" Content="Выполнение" />
+				<ProgressBar x:Name="progressBar" Margin="10" Height="30" />
+				<Label x:Name="progressStatus" HorizontalAlignment="Center" Content="Стадия" />
+			</StackPanel>
+		</Border>
 	</Grid>
 </Window>

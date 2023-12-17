@@ -1,6 +1,7 @@
 ﻿using FaceRetouching.App.Controls;
 using FaceRetouching.PluginSystem;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FaceRetouching.App
 {
@@ -38,18 +39,47 @@ namespace FaceRetouching.App
 				return;
 			}
 
+			LoadingPanel.Visibility = Visibility.Visible;
+
 			var bitmap = selectImage.Image;
 
-			if (bitmap != null)
-			{
-				plugins.ForEach(plugin =>
-				{
-					bitmap = plugin.DoWork(bitmap);
-				});
-			}
+			progressBar.Maximum = plugins.Count;
 
-			selectImage.Image = bitmap;
-			var pixel = bitmap.GetPixel(0, 0);
+			Task.Run(() =>
+			{
+				if (bitmap != null)
+				{
+					int i = 0;
+					plugins.ForEach(plugin =>
+					{
+						Application.Current.Dispatcher.BeginInvoke(() =>
+						{
+							progressStatus.Content = $"{i}/{plugins.Count} {plugin.Name}";
+							progressBar.Value = i;
+						});
+
+						bitmap = plugin.DoWork(bitmap);
+
+						i++;
+
+						Thread.Sleep(200);
+					});
+
+					Application.Current.Dispatcher.BeginInvoke(() =>
+					{
+						progressStatus.Content = $"{i}/{plugins.Count} Завершение";
+						progressBar.Value = i;
+					});
+					Thread.Sleep(200);
+				}
+
+				Application.Current.Dispatcher.BeginInvoke(() =>
+				{
+					selectImage.Image = bitmap;
+
+					LoadingPanel.Visibility = Visibility.Collapsed;
+				});
+			});
 		}
 	}
 }
