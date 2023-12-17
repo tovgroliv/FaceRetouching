@@ -1,4 +1,5 @@
 ﻿using FaceRetouching.PluginSystem;
+using OpenCvSharp;
 using System.Drawing;
 
 #pragma warning disable CA1416
@@ -9,6 +10,7 @@ public class Plugin : IPlugin
 {
 	public string Name => "Ретуширование лица";
 	public string Description => "Ретуширование лица";
+
 	public Bitmap DoWork(Bitmap input)
 	{
 		var result = input;

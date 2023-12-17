@@ -24,9 +24,9 @@ namespace FaceRetouching.App
 		{
 			var plugins = new List<IPlugin>();
 
-            foreach (PluginControl? item in pluginsList.Children)
-            {
-                if (item != null && item.IsSelected)
+			foreach (PluginControl? item in pluginsList.Children)
+			{
+				if (item != null && item.IsSelected)
 				{
 					plugins.Add(item.Plugin);
 				}
@@ -50,6 +50,6 @@ namespace FaceRetouching.App
 
 			selectImage.Image = bitmap;
 			var pixel = bitmap.GetPixel(0, 0);
-        }
+		}
 	}
 }

@@ -4,9 +4,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <OutputPath>../out/app/Plugins/</OutputPath>
+    <OutputPath>../out/app/Plugins/e43dc1ea-c28d-44ed-a10e-a444d4cd73bc/</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DlibDotNet" Version="19.21.0.20220724" />
+    <PackageReference Include="OpenCvSharp4" Version="4.8.0.20230708" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FaceRetouching.PluginSystem\FaceRetouching.PluginSystem.csproj" />

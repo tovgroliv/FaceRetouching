@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <OutputPath>../out/app/</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

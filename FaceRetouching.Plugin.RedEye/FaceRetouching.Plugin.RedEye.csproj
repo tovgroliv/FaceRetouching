@@ -4,12 +4,25 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <OutputPath>../out/app/Plugins/</OutputPath>
+    <OutputPath>../out/app/Plugins/e2c80a99-b889-4b91-86b0-7b89574d4ba9/</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="OpenCvSharp4" Version="4.8.0.20230708" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.8.0.20230708" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FaceRetouching.PluginSystem\FaceRetouching.PluginSystem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="haarcascade_eye.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

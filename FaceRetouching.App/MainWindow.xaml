@@ -51,12 +51,10 @@
 			</TabItem>
 			<TabItem Header="Опубликовать плагин">
 				<StackPanel>
-					<TextBlock TextWrapping="Wrap" FontSize="16"  Margin="10" Text="Разработайте и опубликуйте свой собственный плагин" />
-					<TextBlock Margin="10,5" Text="Название" />
+					<TextBlock TextWrapping="Wrap" FontSize="16" Margin="10" Text="Разработайте и опубликуйте свой собственный плагин" />
+					<TextBlock TextWrapping="Wrap" Margin="10,5" Text="GUID (при обновлении плагина, для новых плагинов оставить пустым)" />
 					<TextBox Margin="10,5" Height="20" />
-					<TextBlock Margin="10,5" Text="Описание" />
-					<TextBox Margin="10,5" Height="20" />
-					<Button Margin="10,5" Content="Выберите файл плагина" Height="30" />
+					<Button Margin="10,5" Content="Выберите файлы плагина" Height="30" />
 					<Button Margin="10,5" Content="Опубликовать" Height="30" />
 				</StackPanel>
 			</TabItem>

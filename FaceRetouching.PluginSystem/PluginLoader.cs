@@ -12,25 +12,30 @@ public class PluginLoader
 
 		if (Directory.Exists(Constants.FolderName))
 		{
-			Directory
-				.GetFiles(Constants.FolderName)
-				.ToList()
-				.Where(file => file.EndsWith(".dll"))
-				.ToList()
-				.ForEach(file =>
+			Directory.GetDirectories(Constants.FolderName).ToList()
+				.ForEach(pluginPath =>
 				{
-					var dll = File.ReadAllBytes(file);
-					var pdbPath = file.Replace(".dll", ".pdb");
+					Directory
+						.GetFiles(pluginPath).ToList()
+						.Where(file => file.Contains("FaceRetouching.Plugin.")).ToList()
+						.Where(file => file.EndsWith(".dll")).ToList()
+						.ForEach(file =>
+						{
+							Assembly.LoadFrom(Path.GetFullPath(file));
 
-					if (File.Exists(pdbPath))
-					{
-						var pdb = File.ReadAllBytes(pdbPath);
-						Assembly.Load(dll, pdb);
-					}
-					else
-					{
-						Assembly.Load(dll);
-					}
+							//var dll = File.ReadAllBytes(file);
+							//var pdbPath = file.Replace(".dll", ".pdb");
+
+							//if (File.Exists(pdbPath))
+							//{
+							//	var pdb = File.ReadAllBytes(pdbPath);
+							//	Assembly.Load(dll, pdb);
+							//}
+							//else
+							//{
+							//	Assembly.Load(dll);
+							//}
+						});
 				});
 		}
 
