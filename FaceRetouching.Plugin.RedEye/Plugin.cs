@@ -35,16 +35,19 @@ public class Plugin : IPlugin
 
 			var bgr = eye.Split();
 
-			var mask = new Mat();
-			mask = mask.BitwiseAnd(bgr[2].GreaterThan(150).ToMat() & bgr[2].GreaterThan(bgr[1] + bgr[0]).ToMat()).ToMat();
+			var mask = new Mat(new Size(bgr[0].Width, bgr[0].Height), bgr[0].Type());
+
+			var one = bgr[2].GreaterThan(150).ToMat();
+			var two = bgr[2].GreaterThan(bgr[1] + bgr[0]).ToMat();
+			mask = mask.BitwiseAnd(one & two).ToMat();
 
 			FillHoles(ref mask);
-			Cv2.Dilate(mask, mask, null, new Point(-1, -1), 3, BorderTypes.Replicate, new Scalar(1));
+			Cv2.Dilate(mask, mask, new Mat(), new Point(-1, -1), 3, BorderTypes.Replicate, new Scalar(1));
 
 			var mean = (bgr[0] + bgr[1]) / 2;
-			Cv2.CopyTo(bgr[2], mask, mean);
-			Cv2.CopyTo(bgr[0], mask, mean);
-			Cv2.CopyTo(bgr[1], mask, mean);
+			Cv2.CopyTo(mean, bgr[2], mask);
+			Cv2.CopyTo(mean, bgr[0], mask);
+			Cv2.CopyTo(mean, bgr[1], mask);
 
 			var eyeOut = new Mat();
 			Cv2.Merge(bgr, eyeOut);
