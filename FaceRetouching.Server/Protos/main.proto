@@ -13,8 +13,8 @@ service Plugins {
 message UploadRequest {
 	string name = 1;
 	string description = 2;
-	repeated string paths = 3;
-	repeated bytes libs = 4;
+	string paths = 3;
+	bytes libs = 4;
 }
 message UploadReply {
 	bool success = 1;
@@ -42,6 +42,6 @@ message PluginDll {
     uint32 id = 1;
     string name = 2;
     string description = 3;
-	repeated string paths = 4;
-	repeated bytes libs = 5;
+	string paths = 4;
+	bytes libs = 5;
 }

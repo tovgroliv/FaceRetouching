@@ -11,12 +11,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DlibDotNet" Version="19.21.0.20220724" />
     <PackageReference Include="OpenCvSharp4" Version="4.8.0.20230708" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.8.0.20230708" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FaceRetouching.PluginSystem\FaceRetouching.PluginSystem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="haarcascade_frontalface_default.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="lbfmodel.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
