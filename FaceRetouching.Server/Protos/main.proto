@@ -27,21 +27,21 @@ message ListReply {
 	repeated PluginInfo plugins = 1;
 }
 message PluginInfo {
-    uint32 id = 1;
-    string name = 2;
-    string description = 3;
+	uint32 id = 1;
+	string name = 2;
+	string description = 3;
 }
 
 message LoadRequest {
-    uint32 id = 1;
+	uint32 id = 1;
 }
 message LoadReply {
 	PluginDll dll = 1;
 }
 message PluginDll {
-    uint32 id = 1;
-    string name = 2;
-    string description = 3;
+	uint32 id = 1;
+	string name = 2;
+	string description = 3;
 	string paths = 4;
 	bytes libs = 5;
 }

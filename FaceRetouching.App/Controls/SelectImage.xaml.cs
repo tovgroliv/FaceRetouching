@@ -82,7 +82,46 @@ public partial class SelectImage : UserControl
 
 	private void Save_Click(object sender, RoutedEventArgs e)
 	{
-		
+		var saveFileDialog = new SaveFileDialog();
+		saveFileDialog.Filter = "Images|*.png;*.bmp;*.jpg;*.jpeg";
+		saveFileDialog.DefaultExt = "jpg";
+		saveFileDialog.FileName = "result";
+
+		if (saveFileDialog.ShowDialog() == true)
+		{
+			string ext = Path.GetExtension(saveFileDialog.FileName);
+
+			if (ext == ".png")
+			{
+				var encoder = new PngBitmapEncoder();
+				encoder.Frames.Add(BitmapFrame.Create((BitmapSource)image.Source));
+
+				using (FileStream stream = new FileStream(saveFileDialog.FileName, FileMode.Create))
+				{
+					encoder.Save(stream);
+				}
+			}
+			if (ext == ".jpg" || ext == ".jpeg")
+			{
+				var encoder = new JpegBitmapEncoder();
+				encoder.Frames.Add(BitmapFrame.Create((BitmapSource)image.Source));
+
+				using (FileStream stream = new FileStream(saveFileDialog.FileName, FileMode.Create))
+				{
+					encoder.Save(stream);
+				}
+			}
+			if (ext == ".bmp")
+			{
+				var encoder = new BmpBitmapEncoder();
+				encoder.Frames.Add(BitmapFrame.Create((BitmapSource)image.Source));
+
+				using (FileStream stream = new FileStream(saveFileDialog.FileName, FileMode.Create))
+				{
+					encoder.Save(stream);
+				}
+			}
+		}
 	}
 
 	private void Cancel_Click(object sender, RoutedEventArgs e)
