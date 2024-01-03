@@ -2,13 +2,8 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.Face;
-using System.Collections.Immutable;
-using Bitmap = System.Drawing.Bitmap;
 using System.Reflection;
-using System.Threading.Tasks;
-
-
-#pragma warning disable CA1416
+using Bitmap = System.Drawing.Bitmap;
 
 namespace FaceRetouching.Plugin.Retouching;
 
@@ -23,9 +18,13 @@ public class Plugin : IPlugin
 		var gray = mat.CvtColor(ColorConversionCodes.BGR2GRAY);
 		var matOut = mat.Clone();
 
+		// Загрузка классификатора поиска лиц на изображении
 		var faceCascade = new CascadeClassifier(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/haarcascade_frontalface_default.xml");
+
+		// Нахождение всех лиц на фото
 		var faces = faceCascade.DetectMultiScale(gray, 1.1, 5, minSize: new(40, 40)).ToList();
 
+		// Загрузка модели определения ключевых точек лица
 		var facemark = FacemarkLBF.Create();
 		facemark.LoadModel(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lbfmodel.yaml");
 
@@ -35,16 +34,21 @@ public class Plugin : IPlugin
 
 			landmarks.ToList().ForEach(faceLandmarks =>
 			{
+				// Положение лица
 				var faceRect = faces[faceId++];
 
+				// Полигоны левого глаза и левой брови
 				var leftEye = faceLandmarks.Skip(36).Take(6).Select(x => new Point(x.X, x.Y));
 				var leftEyebrow = faceLandmarks.Skip(17).Take(5).Select(x => new Point(x.X, x.Y));
 
+				// Полигоны правого глаза и правой брови
 				var rightEye = faceLandmarks.Skip(42).Take(6).Select(x => new Point(x.X, x.Y));
 				var rightEyebrow = faceLandmarks.Skip(22).Take(5).Select(x => new Point(x.X, x.Y));
 
+				// Полигон губ
 				var mouth = faceLandmarks.Skip(48).Take(12).Select(x => new Point(x.X, x.Y));
 
+				// Формирование полигона овала подбородка
 				var face = faceLandmarks.Skip(0).Take(17).Select(x => new Point(x.X, x.Y)).ToList();
 
 				var last = face.Last();
@@ -56,17 +60,14 @@ public class Plugin : IPlugin
 				first.X = faceRect.X;
 				face.Add(first);
 
-				//faceLandmarks.ToList().ForEach(landmark =>
-				//{
-				//	mat.Circle((int)(landmark.X - 1), (int)(landmark.Y - 1), 2, new Scalar(0, 0, 255), thickness: 2);
-				//	mat.Circle((int)(landmark.X - 2), (int)(landmark.Y - 2), 4, new Scalar(255, 255, 0), thickness: 1);
-				//});
-
+				// Получение изображения только с лицом
 				var onlyFace = mat.Clone(faceRect);
 				onlyFace.CvtColor(ColorConversionCodes.BGR2YCrCb);
 
+				// разделение каналов YCrCb
 				var ycrcb = onlyFace.Split();
 
+				// Закрашивание областей не попадающих под обработку
 				mat.FillPoly([leftEye, leftEyebrow, rightEye, rightEyebrow, mouth, face], new(255, 255, 255));
 				onlyFace = mat.Clone(faceRect);
 
@@ -74,6 +75,8 @@ public class Plugin : IPlugin
 				var means = new double[3];
 				// сигма - стандартное отклонение
 				var stdDeviations = new double[3];
+
+				// Вычисление среднего значения и стандартного отклонения для всех каналов YCrCb
 				for (int i = 0; i < 3; i++)
 				{
 					Cv2.MeanStdDev(ycrcb[i], out var mean, out var stdDeviation);
@@ -81,8 +84,8 @@ public class Plugin : IPlugin
 					stdDeviations[i] = stdDeviation[0];
 				}
 
+				// Получение маски кожи лица
 				var mask = onlyFace.Clone();
-
 				for (int y = 0; y < mask.Height; y++)
 				{
 					for (int x = 0; x < mask.Width; x++)
@@ -116,10 +119,8 @@ public class Plugin : IPlugin
 					}
 				}
 
-
-				Mat blurredImage = onlyFace.Clone();
-
 				// Применение фильтра размытия по Гауссу с небольшим радиусом
+				Mat blurredImage = onlyFace.Clone();
 				Cv2.GaussianBlur(blurredImage, blurredImage, new Size(5, 5), 1.5);
 
 				// Преобразование изображений в формат Lab для удобства доступа к яркостной составляющей (L)
@@ -136,16 +137,13 @@ public class Plugin : IPlugin
 				Mat toneMappedImage = new Mat();
 				Cv2.BilateralFilter(onlyFace, toneMappedImage, 15, 80, 80);
 
-				mat = toneMappedImage.Clone();
+				// Получение бинарной маски полученного изображения лица
+				Mat mask1 = toneMappedImage.Threshold(150, 255, ThresholdTypes.Binary);
+
+				// Смешивание маски и оригинального изображения используя преобразование Пуассона
+				Cv2.SeamlessClone(toneMappedImage, matOut, mask1, new(faceRect.X + faceRect.Width / 2, faceRect.Y + faceRect.Height / 2), mat, SeamlessCloneMethods.NormalClone);
 			});
 		}
-
-		//faces.ForEach(faceRect =>
-		//{
-		//	var face = new Mat(mat, faceRect);
-
-		//	mat.Rectangle(faceRect, new Scalar(0, 255, 0), thickness: 4);
-		//});
 
 		matOut = mat.Clone();
 
