@@ -28,10 +28,4 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="server.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
