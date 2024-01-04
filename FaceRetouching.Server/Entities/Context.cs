@@ -8,11 +8,6 @@ public class Context : DbContext
 
 	public Context()
 	{
-		if (!File.Exists("server.db"))
-		{
-			File.Create("server.db");
-		}
-
 		Database.EnsureCreated();
 	}
 

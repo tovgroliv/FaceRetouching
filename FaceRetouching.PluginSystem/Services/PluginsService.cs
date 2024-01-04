@@ -3,7 +3,7 @@ using Grpc.Net.Client;
 
 namespace FaceRetouching.PluginSystem.Services;
 
-internal class PluginsService : IService
+public class PluginsService : IService
 {
 	private Plugins.PluginsClient? Service { get; set; }
 

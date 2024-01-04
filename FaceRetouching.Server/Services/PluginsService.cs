@@ -64,6 +64,7 @@ public class PluginsService : Plugins.PluginsBase
 				var plugin = new PluginEntity() { Name = request.Name, Description = request.Description };
 
 				db.PluginEntities.Add(plugin);
+				db.SaveChanges();
 
 				SavePlugin(plugin.Id.ToString(), request.Lib.ToArray());
 			}
@@ -90,6 +91,11 @@ public class PluginsService : Plugins.PluginsBase
 
 	private void SavePlugin(string guid, byte[] lib)
 	{
+		if (!Directory.Exists("Plugins"))
+		{
+			Directory.CreateDirectory("Plugins");
+		}
+
 		var filePath = $"Plugins/{guid}";
 
 		if (File.Exists(filePath))
@@ -102,6 +108,11 @@ public class PluginsService : Plugins.PluginsBase
 
 	private byte[] RetrievePlugin(string guid)
 	{
+		if (!Directory.Exists("Plugins"))
+		{
+			Directory.CreateDirectory("Plugins");
+		}
+
 		var filePath = $"Plugins/{guid}";
 		var plugin = File.ReadAllBytes(filePath);
 

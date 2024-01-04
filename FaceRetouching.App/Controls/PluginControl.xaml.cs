@@ -42,6 +42,15 @@ public partial class PluginControl : UserControl
 
 	public bool IsSelected => select.IsChecked ?? false;
 
+	public PluginControl(string name, string description) : base()
+	{
+		InitializeComponent();
+
+		Plugin = null;
+		PluginName = name;
+		PluginDescription = description;
+	}
+
 	public PluginControl(IPlugin plugin) : base()
 	{
 		InitializeComponent();

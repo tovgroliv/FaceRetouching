@@ -30,4 +30,10 @@
     <Protobuf Include="Protos\main.proto" GrpcServices="Client" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="local.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
