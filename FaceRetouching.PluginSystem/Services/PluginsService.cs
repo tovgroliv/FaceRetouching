@@ -1,7 +1,5 @@
 ﻿using Google.Protobuf;
 using Grpc.Net.Client;
-using System.IO;
-using System;
 
 namespace FaceRetouching.PluginSystem.Services;
 
@@ -16,22 +14,22 @@ internal class PluginsService : IService
 		return Service != null;
 	}
 
-	public async Task<UploadReply> Upload(string name, string description, string path, byte[] lib)
+	public async Task<UploadReply> Upload(string name, string description, byte[] lib)
 	{
 		if (Service == null) throw new Exception();
 
 		var bs = ByteString.CopyFrom(lib);
 
-		return await Service.UploadAsync(new() { Name = name, Description = description, Path = path, Lib = bs });
+		return await Service.UploadAsync(new() { Name = name, Description = description, Lib = bs });
 	}
 
-	public async Task<UploadReply> Upload(string guid, string path, byte[] lib)
+	public async Task<UploadReply> Upload(string guid, string name, string description, byte[] lib)
 	{
 		if (Service == null) throw new Exception();
 
 		var bs = ByteString.CopyFrom(lib);
 
-		return await Service.UploadAsync(new() { Guid = guid, Path = path, Lib = bs });
+		return await Service.UploadAsync(new() { Guid = guid, Name = name, Description = description, Lib = bs });
 	}
 
 	public async Task<ListReply> GetList()

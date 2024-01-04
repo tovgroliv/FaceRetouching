@@ -4,6 +4,8 @@ option csharp_namespace = "FaceRetouching.Server";
 
 package main;
 
+import "google/protobuf/timestamp.proto";
+
 service Plugins {
 	rpc Upload (UploadRequest) returns (UploadReply);
 	rpc List (ListRequest) returns (ListReply);
@@ -14,8 +16,7 @@ message UploadRequest {
 	string guid = 1;
 	string name = 2;
 	string description = 3;
-	string path = 4;
-	bytes lib = 5;
+	bytes lib = 4;
 }
 message UploadReply {
 	bool success = 1;
@@ -39,12 +40,11 @@ message LoadRequest {
 	string guid = 1;
 }
 message LoadReply {
-	PluginDll dll = 1;
+	PluginDll plugin = 1;
 }
 message PluginDll {
 	string guid = 1;
 	string name = 2;
 	string description = 3;
-	string path = 4;
-	bytes lib = 5;
+	bytes lib = 4;
 }
