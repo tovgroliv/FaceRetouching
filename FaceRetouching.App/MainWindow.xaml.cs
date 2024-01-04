@@ -4,6 +4,8 @@ using Microsoft.Win32;
 using System.IO;
 using System.Windows;
 using FaceRetouching.PluginSystem.Services;
+using System.Diagnostics;
+using FaceRetouching.PluginSystem.Entities;
 
 namespace FaceRetouching.App;
 
@@ -126,7 +128,14 @@ public partial class MainWindow : Window
 				reply = await client.PluginsService.Upload(pluginName.Text, pluginDescription.Text, lib);
 			}
 
-			MessageBox.Show($"Плагин успешно загружен - {reply.Guid}");
+			if (reply.Success)
+			{
+				MessageBox.Show($"Плагин успешно загружен - {reply.Guid}");
+			}
+			else
+			{
+				MessageBox.Show("Ошибка при загрузке");
+			}
 		}
 		catch(Exception ex)
 		{
@@ -136,22 +145,27 @@ public partial class MainWindow : Window
 
 	private async void UpdateList_Click(object sender, RoutedEventArgs e)
 	{
+		remotePlugins.Children.Clear();
+
 		try
 		{
 			var client = ClientConnection.Source.Value;
 
 			ListReply reply = await client.PluginsService.GetList();
 
-			remotePlugins.Children.Clear();
-
 			reply.Plugins.ToList()
 				.ForEach(x =>
 				{
-					var child = new PluginControl(x.Name, x.Description);
-					remotePlugins.Children.Add(child);
+					using (var db = new Context())
+					{
+						var plugin = db.PluginEntities.FirstOrDefault(plugin => plugin.Id == Guid.Parse(x.Guid));
+
+						var child = new PluginUploadControl(x.Guid, x.Name, x.Description, x.LastUpdate.ToDateTime(), plugin != null, plugin?.LastUpdate != x.LastUpdate.ToDateTime());
+						remotePlugins.Children.Add(child);
+					}
 				});
 		}
-		catch (Exception ex)
+		catch (Exception ex) when (!Debugger.IsAttached)
 		{
 			MessageBox.Show($"Ошибка при загрузке - {ex.Message}");
 		}

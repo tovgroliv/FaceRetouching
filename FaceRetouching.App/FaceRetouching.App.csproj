@@ -20,4 +20,10 @@
     <ProjectReference Include="..\FaceRetouching.PluginSystem\FaceRetouching.PluginSystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Controls\PluginUploadControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 ﻿using FaceRetouching.Server.Entities;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace FaceRetouching.Server.Services;
@@ -22,7 +23,13 @@ public class PluginsService : Plugins.PluginsBase
 		using (var db = new Context())
 		{
 			listReply.Plugins.AddRange(db.PluginEntities
-				.Select(x => new PluginInfo() { Guid = x.Id.ToString(), Name = x.Name, Description = x.Description })
+				.Select(x => new PluginInfo()
+				{
+					Guid = x.Id.ToString(),
+					Name = x.Name,
+					Description = x.Description,
+					LastUpdate = DateTime.SpecifyKind(x.LastUpdate, DateTimeKind.Utc).ToTimestamp()
+				})
 				.ToList());
 		}
 
@@ -33,17 +40,18 @@ public class PluginsService : Plugins.PluginsBase
 	{
 		var con = new Context();
 
-		var loadReply = new LoadReply();
+		var loadReply = new LoadReply() { Plugin = new() };
 
 		using (var db = new Context())
 		{
-			var plugin = db.PluginEntities.FirstOrDefault(x => x.Id.ToString() == request.Guid);
+			var plugin = db.PluginEntities.FirstOrDefault(x => x.Id == Guid.Parse(request.Guid));
 
 			if (plugin != null)
 			{
 				loadReply.Plugin.Guid = plugin.Id.ToString();
 				loadReply.Plugin.Name = plugin.Name;
 				loadReply.Plugin.Description = plugin.Description;
+				loadReply.Plugin.LastUpdate = DateTime.SpecifyKind(plugin.LastUpdate, DateTimeKind.Utc).ToTimestamp();
 				loadReply.Plugin.Lib = ByteString.CopyFrom(RetrievePlugin(loadReply.Plugin.Guid));
 			}
 		}
@@ -56,12 +64,13 @@ public class PluginsService : Plugins.PluginsBase
 		var con = new Context();
 
 		var uploadReply = new UploadReply();
+		PluginEntity plugin;
 
 		if (request.Guid == "")
 		{
 			using (var db = new Context())
 			{
-				var plugin = new PluginEntity() { Name = request.Name, Description = request.Description };
+				plugin = new PluginEntity() { Name = request.Name, Description = request.Description };
 
 				db.PluginEntities.Add(plugin);
 				db.SaveChanges();
@@ -73,11 +82,11 @@ public class PluginsService : Plugins.PluginsBase
 		{
 			using (var db = new Context())
 			{
-				var plugin = db.PluginEntities.FirstOrDefault(x => x.Id.ToString() == request.Guid);
+				plugin = db.PluginEntities.FirstOrDefault(x => x.Id == Guid.Parse(request.Guid));
 
 				if (plugin != null)
 				{
-					plugin.LastUpdate = DateTime.Now;
+					plugin.LastUpdate = DateTime.UtcNow;
 					db.PluginEntities.Update(plugin);
 					db.SaveChanges();
 
@@ -85,6 +94,9 @@ public class PluginsService : Plugins.PluginsBase
 				}
 			}
 		}
+
+		uploadReply.Guid = plugin?.Id.ToString() ?? "";
+		uploadReply.Success = plugin != null;
 
 		return Task.FromResult(uploadReply);
 	}

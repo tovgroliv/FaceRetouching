@@ -47,4 +47,5 @@ message PluginDll {
 	string name = 2;
 	string description = 3;
 	bytes lib = 4;
+	google.protobuf.Timestamp lastUpdate = 5;
 }
