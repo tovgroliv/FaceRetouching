@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FaceRetouching.Server.Entities;
+namespace FaceRetouching.PluginSystem.Entities;
 
 public class Context : DbContext
 {
@@ -8,9 +8,9 @@ public class Context : DbContext
 
 	public Context()
 	{
-		if (!File.Exists("server.db"))
+		if (!File.Exists("local.db"))
 		{
-			File.Create("server.db");
+			File.Create("local.db");
 		}
 
 		Database.EnsureCreated();
@@ -18,6 +18,6 @@ public class Context : DbContext
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		optionsBuilder.UseSqlite("Filename=server.db");
+		optionsBuilder.UseSqlite("Filename=local.db");
 	}
 }

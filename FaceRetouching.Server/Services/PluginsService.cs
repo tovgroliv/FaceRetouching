@@ -102,7 +102,7 @@ public class PluginsService : Plugins.PluginsBase
 
 	private byte[] RetrievePlugin(string guid)
 	{
-		var filePath = $"Images/{guid}";
+		var filePath = $"Plugins/{guid}";
 		var plugin = File.ReadAllBytes(filePath);
 
 		return plugin;
