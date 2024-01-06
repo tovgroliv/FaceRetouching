@@ -1,0 +1,19 @@
+﻿<UserControl
+	x:Class="FaceRetouching.App.Controls.ProgressBarControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:local="clr-namespace:FaceRetouching.App.Controls"
+	mc:Ignorable="d"
+	Visibility="Collapsed"
+	d:DesignHeight="450" d:DesignWidth="800">
+
+	<Border x:Name="LoadingPanel" Background="#ddffffff" Grid.ColumnSpan="3">
+		<StackPanel MinWidth="300" VerticalAlignment="Center" HorizontalAlignment="Center">
+			<Label HorizontalAlignment="Center" Content="Выполнение" />
+			<ProgressBar x:Name="progressBar" Margin="10" Height="30" />
+			<Label x:Name="progressStatus" HorizontalAlignment="Center" Content="Стадия" />
+		</StackPanel>
+	</Border>
+</UserControl>

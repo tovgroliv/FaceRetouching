@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace FaceRetouching.App.Controls;
+namespace FaceRetouching.App.Pages;
 
-public partial class SelectImage : UserControl
+public partial class SelectImagePage : UserControl
 {
 	public Bitmap? Image
 	{
@@ -24,14 +24,14 @@ public partial class SelectImage : UserControl
 	public static readonly DependencyProperty ImageProperty = DependencyProperty.Register(
 		nameof(Image),
 		typeof(Bitmap),
-		typeof(SelectImage),
+		typeof(SelectImagePage),
 		new FrameworkPropertyMetadata(
 			null,
 			FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender
 		)
 	);
 
-	public SelectImage() => InitializeComponent();
+	public SelectImagePage() => InitializeComponent();
 
 	private void Border_Drop(object sender, DragEventArgs e)
 	{

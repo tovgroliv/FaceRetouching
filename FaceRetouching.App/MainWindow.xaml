@@ -6,9 +6,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:FaceRetouching.App"
 	xmlns:controls="clr-namespace:FaceRetouching.App.Controls"
+	xmlns:pages="clr-namespace:FaceRetouching.App.Pages"
 	mc:Ignorable="d"
 	WindowStartupLocation="CenterScreen"
 	Title="Система ретуширования" Height="600" Width="1000">
+
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition MinWidth="100" Width="2*" />
@@ -16,63 +18,22 @@
 			<ColumnDefinition MinWidth="100" Width="1*" />
 		</Grid.ColumnDefinitions>
 
-		<controls:SelectImage x:Name="selectImage" Grid.Column="0" />
-		<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Width="5" />
-		<TabControl Grid.Column="2" Margin="10">
-			<TabItem Header="Изображение">
-				<Grid IsEnabled="{Binding ElementName=selectImage, Path=Image, TargetNullValue=false}">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="*" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
+		<pages:SelectImagePage x:Name="selectImagePage" Grid.Column="0" />
 
-					<Label Grid.Row="0" FontSize="16" Margin="10" Content="Выберите плагины" />
-					<ScrollViewer Grid.Row="1" Margin="10">
-						<StackPanel x:Name="pluginsList" />
-					</ScrollViewer>
-					<Button Grid.Row="2" Margin="10" Content="Выполнить" Click="Button_Click" Height="30" />
-				</Grid>
+		<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Width="5" />
+
+		<TabControl Grid.Column="2" Margin="10">
+			<TabItem Header="Обработка">
+				<pages:ImageModifyPage x:Name="imageModifyPage" />
 			</TabItem>
 			<TabItem Header="Плагины">
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="*" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
-
-					<Label Grid.Row="0" FontSize="16"  Margin="10" Content="Установите или обновите плагины" />
-					<ScrollViewer Grid.Row="2" Margin="10">
-						<StackPanel x:Name="remotePlugins" />
-					</ScrollViewer>
-					<Button Grid.Row="3" Margin="10" Content="Обновить список" Click="UpdateList_Click" Height="30" />
-				</Grid>
+				<pages:LoadPlugins />
 			</TabItem>
 			<TabItem Header="Опубликовать плагин">
-				<StackPanel>
-					<TextBlock TextWrapping="Wrap" FontSize="16" Margin="10" Text="Разработайте и опубликуйте свой собственный плагин" />
-					<TextBlock TextWrapping="Wrap" Margin="10,5" Text="GUID (при обновлении плагина, для новых плагинов оставить пустым)" />
-					<TextBox x:Name="pluginGuid" Margin="10,5" Height="20" />
-					<TextBlock TextWrapping="Wrap" Margin="10,5" Text="Имя" />
-					<TextBox x:Name="pluginName" Margin="10,5" Height="20" />
-					<TextBlock TextWrapping="Wrap" Margin="10,5" Text="Описание" />
-					<TextBox x:Name="pluginDescription" Margin="10,5" Height="20" />
-					<TextBlock TextWrapping="Wrap" Margin="10,5" Text="Путь до файла" />
-					<TextBox x:Name="pluginPath" IsEnabled="False" Margin="10,5" Height="20" />
-					<Button Margin="10,5" Content="Выберите файлы плагина" Height="30" Click="SelectPlugin_Click" />
-					<Button Margin="10,5" Content="Опубликовать" Height="30" Click="Upload_Click" />
-				</StackPanel>
+				<pages:UploadPlugins />
 			</TabItem>
 		</TabControl>
 
-		<Border x:Name="LoadingPanel" Visibility="Collapsed" Background="#ddffffff" Grid.ColumnSpan="3">
-			<StackPanel MinWidth="300" VerticalAlignment="Center" HorizontalAlignment="Center">
-				<Label HorizontalAlignment="Center" Content="Выполнение" />
-				<ProgressBar x:Name="progressBar" Margin="10" Height="30" />
-				<Label x:Name="progressStatus" HorizontalAlignment="Center" Content="Стадия" />
-			</StackPanel>
-		</Border>
+		<controls:ProgressBarControl x:Name="progressBarControl" Grid.ColumnSpan="3" />
 	</Grid>
 </Window>

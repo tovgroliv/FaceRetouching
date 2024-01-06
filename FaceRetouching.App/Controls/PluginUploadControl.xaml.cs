@@ -1,5 +1,4 @@
-﻿using FaceRetouching.PluginSystem;
-using FaceRetouching.PluginSystem.Services;
+﻿using FaceRetouching.PluginSystem.Services;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
