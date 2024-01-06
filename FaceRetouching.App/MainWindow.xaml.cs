@@ -1,11 +1,5 @@
-﻿using FaceRetouching.App.Controls;
-using FaceRetouching.PluginSystem;
-using Microsoft.Win32;
-using System.IO;
+﻿using FaceRetouching.PluginSystem.Services;
 using System.Windows;
-using FaceRetouching.PluginSystem.Services;
-using System.Diagnostics;
-using FaceRetouching.PluginSystem.Entities;
 
 namespace FaceRetouching.App;
 

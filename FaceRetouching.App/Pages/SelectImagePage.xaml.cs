@@ -129,7 +129,7 @@ public partial class SelectImagePage : UserControl
 		Image = null;
 	}
 
-	public BitmapImage ConvertBitmap(Bitmap bitmap)
+	private BitmapImage ConvertBitmap(Bitmap bitmap)
 	{
 		MemoryStream ms = new MemoryStream();
 		bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);

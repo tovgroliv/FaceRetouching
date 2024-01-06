@@ -8,9 +8,9 @@ using System.Windows.Controls;
 
 namespace FaceRetouching.App.Pages;
 
-public partial class LoadPlugins : UserControl
+public partial class LoadPluginsPage : UserControl
 {
-	public LoadPlugins()
+	public LoadPluginsPage()
 	{
 		InitializeComponent();
 	}

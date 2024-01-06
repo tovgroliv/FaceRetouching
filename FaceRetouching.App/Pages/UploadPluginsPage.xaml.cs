@@ -7,9 +7,9 @@ using System.Windows.Controls;
 
 namespace FaceRetouching.App.Pages;
 
-public partial class UploadPlugins : UserControl
+public partial class UploadPluginsPage : UserControl
 {
-	public UploadPlugins()
+	public UploadPluginsPage()
 	{
 		InitializeComponent();
 	}

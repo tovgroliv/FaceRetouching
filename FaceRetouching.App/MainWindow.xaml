@@ -27,10 +27,10 @@
 				<pages:ImageModifyPage x:Name="imageModifyPage" />
 			</TabItem>
 			<TabItem Header="Плагины">
-				<pages:LoadPlugins />
+				<pages:LoadPluginsPage />
 			</TabItem>
 			<TabItem Header="Опубликовать плагин">
-				<pages:UploadPlugins />
+				<pages:UploadPluginsPage />
 			</TabItem>
 		</TabControl>
 
